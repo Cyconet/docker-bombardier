@@ -20,7 +20,7 @@ LABEL org.label-schema.name="bombardier - HTTP(S) benchmarking tool" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-branch=$VCS_BRANCH
 
-ENV BOMBARDIER_VERSION v1.1.1
+ENV BOMBARDIER_VERSION v1.2
 ENV UPSTREAM github.com/codesenberg/bombardier
 
 ENV GOROOT /usr/lib/go
