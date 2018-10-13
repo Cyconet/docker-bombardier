@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM golang:alpine as builder
 
 # Dockerfile Maintainer
 MAINTAINER Jan Wagner "waja@cyconet.org"
@@ -23,21 +23,25 @@ LABEL org.label-schema.name="bombardier - HTTP(S) benchmarking tool" \
 ENV BOMBARDIER_VERSION v1.2
 ENV UPSTREAM github.com/codesenberg/bombardier
 
-ENV GOROOT /usr/lib/go
 ENV GOPATH /gopath
-ENV GOBIN /gopath/bin
-ENV PATH $PATH:$GOROOT/bin:$GOPATH/bin
+ENV GOBIN /go/bin
 
-# Install dependencies for building httpdiff 
+# Install dependencies for building bombardier
 RUN apk --no-cache update && apk --no-cache upgrade && \
- apk --no-cache add ca-certificates && \
- apk --no-cache add --virtual build-dependencies curl git go musl-dev && \
- # Install bombardier client
- echo "Starting installing bombardier." && \
+ apk --no-cache add ca-certificates git && \
+ # Build bombardier client
+ echo "Fetching bombardier source" && \
  go get -d $UPSTREAM && \
  cd $GOPATH/src/$UPSTREAM/ && git checkout $BOMBARDIER_VERSION && \
- go install $UPSTREAM && \
- apk del build-dependencies
+ echo "Getting dependancies" && \
+ go get -d -v && \
+ echo "Building bombardier" && \
+ CGO_ENABLED=0 go install -v -ldflags '-extldflags "-static"' $UPSTREAM
 
-ENTRYPOINT ["/gopath/bin/bombardier"]
+# start from scratch
+FROM scratch
+# Copy our static executable
+COPY --from=builder /go/bin/bombardier /go/bin/bombardier
+
+ENTRYPOINT ["/go/bin/bombardier"]
 #CMD [""]
