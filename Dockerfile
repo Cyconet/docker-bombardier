@@ -24,6 +24,7 @@ ENV GOPATH /gopath
 ENV GOBIN /go/bin
 
 # Install dependencies for building bombardier
+# hadolint ignore=DL3017,DL3018
 RUN apk --no-cache update && apk --no-cache upgrade && \
  apk --no-cache add ca-certificates git && \
  # Build bombardier client
