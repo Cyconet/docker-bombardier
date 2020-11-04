@@ -28,8 +28,10 @@ RUN apk --no-cache update && apk --no-cache upgrade && \
  apk --no-cache add ca-certificates git && \
  # Build bombardier client
  echo "Fetching bombardier source" && \
- go get -d $UPSTREAM && \
- cd $GOPATH/src/$UPSTREAM/ && git checkout $BOMBARDIER_VERSION && \
+ go get -d $UPSTREAM
+# https://github.com/hadolint/hadolint/wiki/DL3003
+WORKDIR $GOPATH/src/$UPSTREAM/
+RUN  git checkout $BOMBARDIER_VERSION && \
  echo "Getting dependancies" && \
  go get -d -v && \
  echo "Building bombardier" && \
