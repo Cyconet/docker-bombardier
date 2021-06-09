@@ -15,7 +15,8 @@ LABEL org.label-schema.name="bombardier - HTTP(S) benchmarking tool" \
     org.label-schema.version="${BUILD_VERSION:-unknown}" \
     org.label-schema.vcs-url="${VCS_URL:-unknown}" \
     org.label-schema.vcs-ref="${VCS_REF:-unknown}" \
-    org.label-schema.vcs-branch="${VCS_BRANCH:-unknown}"
+    org.label-schema.vcs-branch="${VCS_BRANCH:-unknown}" \
+    org.opencontainers.image.source="https://github.com/waja/docker-bombardier"
 
 ENV BOMBARDIER_VERSION v1.2.5
 ENV UPSTREAM github.com/codesenberg/bombardier
